@@ -74,7 +74,7 @@ function assignTrialAns(stim_list) {
     stim_list[i]['target'] = stim_list[i]['real']
   }
 
-  for (i=stim_list.length/2;i<stim_list.length;i++) {
+  for (i=Math.ceil(stim_list.length/2);i<stim_list.length;i++) {
     stim_list[i]['type'] = 'nonreal'
     stim_list[i]['target'] = stim_list[i]['nonreal']
   }
@@ -123,7 +123,7 @@ function buildBlock(block_para, results) {
   }
     var block;
     if (typeof block_para.split === "undefined") {
-      return buildSimpleBlock(block_para,results);
+      return buildSimpleBlock(block_para,assignTrialAns(jsPsych.randomization.shuffle(results)));
     } else {
       block_list = block_para.split(results);
       var timeline = [];
@@ -151,13 +151,7 @@ function trials(stimuli, feedback  = false) {
       },
       {
           type: 'html-keyboard-response',
-          stimulus: function(){ return "<p class='stimulus'>"+jsPsych.timelineVariable('target',true)+"</p>";},           
-          choices: [' '],
-          trial_duration: 10000
-      },
-      {
-          type: 'html-keyboard-response',
-          stimulus: function(){ return "<p class='stimulus'>What is the missing letter?</p>"; },
+          stimulus: function(){ return "<p class='stimulus'>"+jsPsych.timelineVariable('target',true)+"</p>"; },
           trial_duration: 6000,
           data: function(){
           return {
